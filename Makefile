@@ -50,6 +50,9 @@ else
  endif
 endif
 
+switch:
+	@$(MAKE) -C switch PKSM_TITLE=${PKSM_TITLE} PKSM_AUTHOR=${PKSM_AUTHOR} VERSION_MAJOR=${VERSION_MAJOR} VERSION_MINOR=${VERSION_MINOR} VERSION_MICRO=${VERSION_MICRO} GIT_REV=${GIT_REV}
+
 3ds-debug: revision
 	$(MAKE) -C 3ds
 
@@ -97,4 +100,4 @@ cppcheck:
 cppclean:
 	$(MAKE) -C 3ds cppclean
 
-.PHONY: debug release 3ds-debug no-deps 3ds-release docs clean spotless format cppcheck cppclean
+.PHONY: debug release 3ds-debug no-deps 3ds-release docs clean spotless format cppcheck cppclean switch
