@@ -76,11 +76,11 @@ void SaveMainScreen::draw() const
     buttonSettings->draw(30, COLOR_NULL);
 
     u32 title_w, title_h;
-    auto displayName = currentTitle.displayName();
-    SDLH_GetTextDimensions(28, displayName.first.c_str(), &title_w, &title_h);
+    auto displayName = StringUtils::removeAccents(currentTitle.name());
+    SDLH_GetTextDimensions(28, displayName.c_str(), &title_w, &title_h);
         if (title_w >= 534) {
-        displayName.first = displayName.first.substr(0, 24) + "...";
-        SDLH_GetTextDimensions(28, displayName.first.c_str(), &title_w, &title_h);
+        displayName = displayName.substr(0, 24) + "...";
+        SDLH_GetTextDimensions(28, displayName.c_str(), &title_w, &title_h);
     }
 
     if (currentTitle.icon() != NULL) {
@@ -89,7 +89,7 @@ void SaveMainScreen::draw() const
     }
 
     SDLH_DrawRect(0, 0, 1280, 12 + title_h, theme().c1);
-    SDLH_DrawText(28, 1280 - 16 - title_w, 8, theme().c5, displayName.first.c_str());
+    SDLH_DrawText(28, 1280 - 16 - title_w, 8, theme().c5, displayName.c_str());
 
     if (wantInstructions && currentOverlay == nullptr) {
         SDLH_DrawRect(0, 0, 1280, 720, FC_MakeColor(theme().c0.r, theme().c0.g, theme().c0.b, 170));

@@ -92,21 +92,21 @@ void MainScreen::draw() const
 
         // draw infos
         u32 title_w, title_h;
-        auto displayName = title.displayName();
-        SDLH_GetTextDimensions(28, displayName.first.c_str(), &title_w, &title_h);
+        auto displayName = StringUtils::removeAccents(title.name());
+        SDLH_GetTextDimensions(28, displayName.c_str(), &title_w, &title_h);
 
         if (title_w >= 534) {
-            displayName.first = displayName.first.substr(0, 24) + "...";
-            SDLH_GetTextDimensions(28, displayName.first.c_str(), &title_w, &title_h);
+            displayName = displayName.substr(0, 24) + "...";
+            SDLH_GetTextDimensions(28, displayName.c_str(), &title_w, &title_h);
         }
 
         SDLH_DrawRect(0, 0, 1280, 12 + title_h, theme().c1);
-        SDLH_DrawText(28, 1280 - 16 - title_w, 8, theme().c5, displayName.first.c_str());
+        SDLH_DrawText(28, 1280 - 16 - title_w, 8, theme().c5, displayName.c_str());
 
         drawOutline(428, 320, 414, 304, 4, theme().c3);
         backupList->draw(g_backupScrollEnabled);
 
-        if (getPKSMBridgeFlag())
+        if (pksmBridge)
         {
             drawOutline(870, 320, 220, 80, 4, theme().c3);
             drawOutline(870, 420, 220, 80, 4, theme().c3);
@@ -253,10 +253,7 @@ void MainScreen::handleEvents(const InputState& input)
                     getTitle(title, g_currentUId, hid.fullIndex());
                     //I know you're not supposed to copy and paste code, but I don't really care right now.
                     this->index(CELLS, 0);
-                    g_backupScrollEnabled = false;
                     entryType(TITLES);
-                    MS::clearSelectedEntries();
-                    updateButtons();
                     changeScreen(std::make_unique<SaveMainScreen>(title));
 
 
@@ -294,7 +291,7 @@ void MainScreen::handleEvents(const InputState& input)
 
     // Handle pressing/touching L
     if (buttonBackup->released() || (kdown & HidNpadButton_L)) {
-        if (getPKSMBridgeFlag()) {
+        if (pksmBridge) {
             if (this->index(CELLS) != 0) {
                 currentOverlay = std::make_shared<YesNoOverlay>(
                     *this, "Send save to PKSM 3DS?",
@@ -315,7 +312,7 @@ void MainScreen::handleEvents(const InputState& input)
     // Handle pressing/touching R
     if (buttonRestore->released() || (kdown & HidNpadButton_R)) {
         if (g_backupScrollEnabled) {
-            if (getPKSMBridgeFlag() && this->index(CELLS) != 0) {
+            if (pksmBridge && this->index(CELLS) != 0) {
                 currentOverlay = std::make_shared<YesNoOverlay>(
                     *this, "Receive save from PKSM 3DS?",
                     [this]() {
@@ -367,11 +364,6 @@ void MainScreen::index(entryType_t type, size_t i)
     else {
         backupList->setIndex(i);
     }
-}
-
-bool MainScreen::getPKSMBridgeFlag(void) const
-{
-    return Configuration::getInstance().isPKSMBridgeEnabled() ? pksmBridge : false;
 }
 
 void MainScreen::setPKSMBridgeFlag(bool f)
