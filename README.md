@@ -104,6 +104,9 @@ https://github.com/FlagBrew/PKSM.git` if initially cloning, `git submodule init`
 and `git submodule update` if running from an existing clone) and run `make
 all`.
 
+To compile the (very incomplete) Nintendo Switch version, use `make switch -j`
+instead of `make all`.
+
 ## Credits
 
 - [Bernardo](https://github.com/BernardoGiordano/) for creating PKSM
