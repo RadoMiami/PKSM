@@ -30,7 +30,6 @@
 #include "KeyboardManager.hpp"
 #include "account.hpp"
 #include "directory.hpp"
-#include "multiselection.hpp"
 #include "title.hpp"
 #include "util.hpp"
 #include <dirent.h>

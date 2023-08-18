@@ -47,8 +47,7 @@ void servicesExit(void)
 Result servicesInit(void)
 {
     io::createDirectory("sdmc:/switch");
-    io::createDirectory("sdmc:/switch/Checkpoint");
-    io::createDirectory("sdmc:/switch/Checkpoint/saves");
+    io::createDirectory("sdmc:/switch/PKSM");
 
     Logger::getInstance().log(Logger::INFO, "Starting Checkpoint loading...");
 

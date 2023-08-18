@@ -57,6 +57,8 @@ void Title::init(u8 saveDataType, u64 id, AccountUid userID, const std::string& 
     mName         = name;
     mSafeName     = StringUtils::containsInvalidChar(name) ? StringUtils::format("0x%016llX", mId) : StringUtils::removeForbiddenCharacters(name);
     mPath         = "sdmc:/switch/Checkpoint/saves/" + StringUtils::format("0x%016llX", mId) + " " + mSafeName;
+    jksvPath      = "sdmc:/JKSV/" + StringUtils::removeForbiddenCharacters(StringUtils::removeAccents(mName));
+    //Todo: Make it be able to read JKSV saves since JKSV is the save manager on switch.hacks.guide.
 
     std::string aname = StringUtils::removeAccents(mName);
     size_t pos        = aname.rfind(":");
@@ -198,13 +200,23 @@ void Title::refreshDirectories(void)
 
         std::sort(mSaves.rbegin(), mSaves.rend());
         std::sort(mFullSavePaths.rbegin(), mFullSavePaths.rend());
-        mSaves.insert(mSaves.begin(), "New...");
-        mFullSavePaths.insert(mFullSavePaths.begin(), "New...");
+        mSaves.insert(mSaves.begin(), "Game Save File");
+        mFullSavePaths.insert(mFullSavePaths.begin(), "Game Save File");
     }
     else {
         Logger::getInstance().log(Logger::ERROR, "Couldn't retrieve the extdata directory list for the title " + name());
     }
 
+    // Put in JKSV saves (if applicable). It sure would be great if I could put this in a method instead of copying code. (Get the hint?)
+    Directory jksvList(jksvPath);
+    if (jksvList.good()) {
+        for (size_t i = 0, sz = jksvList.size(); i < sz; i++) {
+            if (jksvList.folder(i)) {
+                mSaves.push_back(jksvList.entry(i));
+                mFullSavePaths.push_back(jksvPath + "/" + jksvList.entry(i));
+            }
+        }
+    }
     // save backups from configuration
     std::vector<std::string> additionalFolders = Configuration::getInstance().additionalSaveFolders(mId);
     for (std::vector<std::string>::const_iterator it = additionalFolders.begin(); it != additionalFolders.end(); ++it) {

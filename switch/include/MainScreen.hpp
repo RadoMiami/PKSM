@@ -36,7 +36,6 @@
 #include "hid.hpp"
 #include "io.hpp"
 #include "main.hpp"
-#include "multiselection.hpp"
 #include "pksmbridge.hpp"
 #include "scrollable.hpp"
 #include <tuple>
@@ -62,7 +61,6 @@ protected:
     size_t index(entryType_t type) const;
     void index(entryType_t type, size_t i);
     void resetIndex(entryType_t type);
-    bool getPKSMBridgeFlag(void) const;
     void setPKSMBridgeFlag(bool f);
     void updateButtons(void);
     std::string sortMode(void) const;

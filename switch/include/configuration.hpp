@@ -59,7 +59,7 @@ public:
     const char* c_str(void);
     nlohmann::json getJson(void);
 
-    const std::string BASEPATH = "/switch/Checkpoint/config.json";
+    const std::string BASEPATH = "/switch/PKSM/config.json";
 
 private:
     Configuration(void);

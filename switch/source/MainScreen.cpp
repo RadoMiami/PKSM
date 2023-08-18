@@ -56,7 +56,6 @@ int MainScreen::selectorY(size_t i) const
 
 void MainScreen::draw() const
 {
-    auto selEnt          = MS::selectedEntries();
     const size_t entries = hid.maxVisibleEntries();
     const size_t max     = hid.maxEntries(getTitleCount(g_currentUId)) + 1;
 
@@ -271,12 +270,9 @@ void MainScreen::handleEvents(const InputState& input)
                 [this]() { this->removeOverlay(); });
         }
         else {
-            // Activate backup list only if multiple selections are not enabled
-            if (!MS::multipleSelectionEnabled()) {
-                g_backupScrollEnabled = true;
-                updateButtons();
-                entryType(CELLS);
-            }
+            g_backupScrollEnabled = true;
+            updateButtons();
+            entryType(CELLS);
         }
     }
 
@@ -285,7 +281,6 @@ void MainScreen::handleEvents(const InputState& input)
         this->index(CELLS, 0);
         g_backupScrollEnabled = false;
         entryType(TITLES);
-        MS::clearSelectedEntries();
         updateButtons(); // Do this last
     }
 

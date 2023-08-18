@@ -75,6 +75,7 @@ private:
     std::string mSafeName;
     std::string mAuthor;
     std::string mPath;
+    std::string jksvPath;
     std::vector<std::string> mSaves;
     std::vector<std::string> mFullSavePaths;
     u8 mSaveDataType;

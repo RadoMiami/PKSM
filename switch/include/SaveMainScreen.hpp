@@ -36,7 +36,6 @@
 #include "hid.hpp"
 #include "io.hpp"
 #include "main.hpp"
-#include "multiselection.hpp"
 #include "pksmbridge.hpp"
 #include "scrollable.hpp"
 #include <tuple>

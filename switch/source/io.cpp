@@ -186,29 +186,25 @@ std::tuple<bool, Result, std::string> io::backup(size_t index, AccountUid uid, s
                                      : StringUtils::removeNotAscii(StringUtils::removeAccents(Account::username(title.userId()))));
     std::string customPath;
 
-    if (MS::multipleSelectionEnabled()) {
-        customPath = isNewFolder ? suggestion : "";
-    }
-    else {
-        if (isNewFolder) {
-            if (KeyboardManager::get().isSystemKeyboardAvailable().first) {
-                std::pair<bool, std::string> keyboardResponse = KeyboardManager::get().keyboard(suggestion);
-                if (keyboardResponse.first) {
-                    customPath = StringUtils::removeForbiddenCharacters(keyboardResponse.second);
-                }
-                else {
-                    FileSystem::unmount();
-                    Logger::getInstance().log(Logger::INFO, "Copy operation aborted by the user through the system keyboard.");
-                    return std::make_tuple(false, 0, "Operation aborted by the user.");
-                }
+    
+    if (isNewFolder) {
+        if (KeyboardManager::get().isSystemKeyboardAvailable().first) {
+            std::pair<bool, std::string> keyboardResponse = KeyboardManager::get().keyboard(suggestion);
+            if (keyboardResponse.first) {
+                customPath = StringUtils::removeForbiddenCharacters(keyboardResponse.second);
             }
             else {
-                customPath = suggestion;
+                FileSystem::unmount();
+                Logger::getInstance().log(Logger::INFO, "Copy operation aborted by the user through the system keyboard.");
+                return std::make_tuple(false, 0, "Operation aborted by the user.");
             }
         }
         else {
-            customPath = "";
+            customPath = suggestion;
         }
+    }
+    else {
+        customPath = "";
     }
 
     std::string dstPath;
@@ -241,10 +237,8 @@ std::tuple<bool, Result, std::string> io::backup(size_t index, AccountUid uid, s
     refreshDirectories(title.id());
 
     FileSystem::unmount();
-    if (!MS::multipleSelectionEnabled()) {
-        blinkLed(4);
-        ret = std::make_tuple(true, 0, "Progress correctly saved to disk.");
-    }
+    blinkLed(4);
+    ret = std::make_tuple(true, 0, "Progress correctly saved to disk.");
 
     auto systemKeyboardAvailable = KeyboardManager::get().isSystemKeyboardAvailable();
     if (!systemKeyboardAvailable.first) {
