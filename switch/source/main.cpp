@@ -24,7 +24,7 @@
  *         reasonable ways as different from the original version.
  */
 
- //RadoMiami tampers with the Source Spaghetti and expects good things to come from it: The Movie
+ //RadoMiami tampers with forces beyond their understanding and expects good things to come from it: The Movie
 #include "main.hpp"
 #include "MainScreen.hpp"
 extern "C" {
@@ -43,7 +43,8 @@ static void networkLoop(void)
 
 int main(void)
 {
-    theme(2);
+    //Change the theme here until I get it working in the settings tab.
+    theme(1);
     Result res = servicesInit();
     if (R_FAILED(res)) {
         servicesExit();

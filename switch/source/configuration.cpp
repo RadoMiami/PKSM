@@ -207,11 +207,6 @@ std::vector<std::string> Configuration::additionalSaveFolders(u64 id)
     return folders == mAdditionalSaveFolders.end() ? emptyvec : folders->second;
 }
 
-bool Configuration::isPKSMBridgeEnabled(void)
-{
-    return PKSMBridgeEnabled;
-}
-
 void Configuration::pollServer(void)
 {
     mg_mgr_poll(&mgr, 1000 / 60);

@@ -58,7 +58,8 @@ void Title::init(u8 saveDataType, u64 id, AccountUid userID, const std::string& 
     mSafeName     = StringUtils::containsInvalidChar(name) ? StringUtils::format("0x%016llX", mId) : StringUtils::removeForbiddenCharacters(name);
     mPath         = "sdmc:/switch/Checkpoint/saves/" + StringUtils::format("0x%016llX", mId) + " " + mSafeName;
     jksvPath      = "sdmc:/JKSV/" + StringUtils::removeForbiddenCharacters(StringUtils::removeAccents(mName));
-    //Todo: Make it be able to read JKSV saves since JKSV is the save manager on switch.hacks.guide.
+    //It reads JKSV saves now because that's the save manager that switch.hacks.guide tells you to use.
+    //Checkpoint saves are still the "default".
 
     std::string aname = StringUtils::removeAccents(mName);
     size_t pos        = aname.rfind(":");
@@ -265,7 +266,7 @@ void loadTitles(void)
             u64 tid        = info.application_id;
             u64 sid        = info.save_data_id;
             AccountUid uid = info.uid;
-            //There's probably a better place to do this filtering... Too bad!
+            //There's probably a better place to do this filtering.
             if (!Configuration::getInstance().filter(tid) && isPKMNSwitchTitle(tid)) {
                 res = nsGetApplicationControlData(NsApplicationControlSource_Storage, tid, nsacd, sizeof(NsApplicationControlData), &outsize);
                 if (R_SUCCEEDED(res) && !(outsize < sizeof(nsacd->nacp))) {

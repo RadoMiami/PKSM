@@ -49,7 +49,6 @@ public:
 
     bool filter(u64 id);
     bool favorite(u64 id);
-    bool isPKSMBridgeEnabled(void);
     bool isFTPEnabled(void);
     std::vector<std::string> additionalSaveFolders(u64 id);
     void pollServer(void);

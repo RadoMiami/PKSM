@@ -36,12 +36,12 @@ SaveMainScreen::SaveMainScreen(Title title)
     currentTitle = title;
     selectionTimer   = 0;
     sprintf(ver, "v%d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO);
-    buttonStorage  = std::make_unique<Clickable>(8, 60, 400, 80, theme().c2, theme().c6, "Storage", false);
-    buttonEditor = std::make_unique<Clickable>(8, 160, 400, 80, theme().c2, theme().c6, "Editor", false);
-    buttonEvents  = std::make_unique<Clickable>(8, 260, 400, 80, theme().c2, theme().c6, "Events", false);
-    buttonScripts = std::make_unique<Clickable>(8, 360, 400, 80, theme().c2, theme().c6, "Scripts", false);
-    buttonBag  = std::make_unique<Clickable>(8, 460, 400, 80, theme().c2, theme().c6, "Bag", false);
-    buttonSettings = std::make_unique<Clickable>(8, 560, 400, 80, theme().c2, theme().c6, "Settings", false);
+    buttonStorage  = std::make_unique<Clickable>(8, 65, 400, 70, theme().c2, theme().c6, "Storage", false);
+    buttonEditor = std::make_unique<Clickable>(8, 165, 400, 70, theme().c2, theme().c6, "Editor", false);
+    buttonEvents  = std::make_unique<Clickable>(8, 265, 400, 70, theme().c2, theme().c6, "Events", false);
+    buttonScripts = std::make_unique<Clickable>(8, 365, 400, 70, theme().c2, theme().c6, "Scripts", false);
+    buttonBag  = std::make_unique<Clickable>(8, 465, 400, 70, theme().c2, theme().c6, "Bag", false);
+    buttonSettings = std::make_unique<Clickable>(8, 565, 400, 70, theme().c2, theme().c6, "Settings", false);
     buttonStorage->canChangeColorWhenSelected(true);
     buttonEditor->canChangeColorWhenSelected(true);
     buttonEvents->canChangeColorWhenSelected(true);
@@ -62,12 +62,12 @@ void SaveMainScreen::draw() const
     SDLH_GetTextDimensions(24, "almostpksm", &checkpoint_w, &checkpoint_h);
     SDLH_GetTextDimensions(24, "\ue046 Instructions", &inst_w, &inst_h);
 
-    drawOutline(8, 60, 400, 80, 4, theme().c3);
-    drawOutline(8, 160, 400, 80, 4, theme().c3);
-    drawOutline(8, 260, 400, 80, 4, theme().c3);
-    drawOutline(8, 360, 400, 80, 4, theme().c3);
-    drawOutline(8, 460, 400, 80, 4, theme().c3);
-    drawOutline(8, 560, 400, 80, 4, theme().c3);
+    drawOutline(8, 65, 400, 70, 4, theme().c3);
+    drawOutline(8, 165, 400, 70, 4, theme().c3);
+    drawOutline(8, 265, 400, 70, 4, theme().c3);
+    drawOutline(8, 365, 400, 70, 4, theme().c3);
+    drawOutline(8, 465, 400, 70, 4, theme().c3);
+    drawOutline(8, 565, 400, 70, 4, theme().c3);
     buttonStorage->draw(30, COLOR_NULL);
     buttonEditor->draw(30, COLOR_NULL);
     buttonEvents->draw(30, COLOR_NULL);

@@ -155,11 +155,11 @@ void MainScreen::draw() const
     SDLH_DrawText(24, 16, 672 + (40 - checkpoint_h) / 2 + checkpoint_h - inst_h, theme().c6, "\ue046 Settings");
 
     if (g_isTransferringFile) {
-        SDLH_DrawRect(0, 0, 1280, 720, FC_MakeColor(theme().c0.r, theme().c0.g, theme().c0.b, 170));
+        SDLH_DrawRect(0, 0, 1280, 720, FC_MakeColor(0, 0, 0, 170));
 
         u32 w, h;
         SDLH_GetTextDimensions(28, g_currentFile.c_str(), &w, &h);
-        SDLH_DrawText(28, (1280 - w) / 2, (720 - h) / 2, theme().c6, g_currentFile.c_str());
+        SDLH_DrawText(28, (1280 - w) / 2, (720 - h) / 2, COLOR_WHITE, g_currentFile.c_str());
     }
 }
 
@@ -217,13 +217,11 @@ void MainScreen::handleEvents(const InputState& input)
         setPKSMBridgeFlag(false);
     }
     // handle PKSM bridge
-    if (Configuration::getInstance().isPKSMBridgeEnabled()) {
-        Title title;
-        getTitle(title, g_currentUId, this->index(TITLES));
-        if (isPKSMBridgeTitle(title.id())) {
-            setPKSMBridgeFlag(true);
-            updateButtons();
-        }
+    Title title;
+    getTitle(title, g_currentUId, this->index(TITLES));
+    if (isPKSMBridgeTitle(title.id())) {
+        setPKSMBridgeFlag(true);
+        updateButtons();
     }
 
     // handle touchscreen
@@ -237,35 +235,53 @@ void MainScreen::handleEvents(const InputState& input)
     }
 
     // Handle pressing A
-    // Backup list active:   Backup/Restore
-    // Backup list inactive: Activate backup list only if multiple
-    //                       selections are enabled
+    // Copy save to sdmc:/switch/PKSM/temp
     if (kdown & HidNpadButton_A) {
-        // If backup list is active...
         if (g_backupScrollEnabled) {
-            // If the "New..." entry is selected...
-            //TODO: Make this open up the save instead of backing it up! Much, much, much easier said than done.
+            //CELL ZERO CRASHES AND OTHER CELLS DON'T FINISH? WHY?
+            
             currentOverlay = std::make_shared<YesNoOverlay>(
                 *this, "Open this save?",
                 [this]() {
+                    if (io::directoryExists(TEMP_PATH + "/")) { io::deleteFolderRecursively(TEMP_PATH + "/");}
+                    io::createDirectory(TEMP_PATH + "/");
                     Title title;
                     getTitle(title, g_currentUId, hid.fullIndex());
-                    //I know you're not supposed to copy and paste code, but I don't really care right now.
-                    this->index(CELLS, 0);
-                    entryType(TITLES);
-                    changeScreen(std::make_unique<SaveMainScreen>(title));
-
-
-
-                    /*auto result = io::restore(this->index(TITLES), g_currentUId, this->index(CELLS), nameFromCell(this->index(CELLS)));
-                    if (std::get<0>(result)) {
-                        Title title;
-                        getTitle(title, g_currentUId, hid.fullIndex());
-                        changeScreen(std::make_unique<SaveMainScreen>(title));
+                    if (0 == this->index(CELLS)) {
+                        auto result = io::backup(this->index(TITLES), g_currentUId, this->index(CELLS));
+                        if (std::get<0>(result)) {
+                            //I would have moved this code below so I could still show an information pop up, but
+                            //the non-euclidean code apparently forbids it. Either that or I'm dumb. Probably a bit of both.
+                            this->index(CELLS, 0);
+                            g_backupScrollEnabled = false;
+                            entryType(TITLES);
+                            if (io::fileExists(TEMP_PATH + "/main")) {
+                                changeScreen(std::make_unique<SaveMainScreen>(title));
+                            } else {
+                                currentOverlay = std::make_shared<ErrorOverlay>(*this, 0, "That save does not exist!");
+                            }
+                        }
+                        else {
+                            currentOverlay = std::make_shared<ErrorOverlay>(*this, std::get<1>(result), std::get<2>(result));
+                        }
                     }
                     else {
-                        currentOverlay = std::make_shared<ErrorOverlay>(*this, std::get<1>(result), std::get<2>(result));
-                    }*/
+                        auto result = io::copyDirectory(title.fullPath(this->index(CELLS)) + "/", TEMP_PATH + "/");
+                        if (result == 0) {
+                            //I know you're not supposed to copy and paste code, but I don't really care right now.
+                            this->index(CELLS, 0);
+                            g_backupScrollEnabled = false;
+                            entryType(TITLES);
+                            if (io::fileExists(TEMP_PATH + "/main")) {
+                                changeScreen(std::make_unique<SaveMainScreen>(title));
+                            } else {
+                                currentOverlay = std::make_shared<ErrorOverlay>(*this, 0, "That save does not exist!");
+                            }
+                        }
+                        else {
+                            currentOverlay = std::make_shared<ErrorOverlay>(*this, 0, "External save failed to copy \nto temporary location.");
+                        }
+                    }
                 },
                 [this]() { this->removeOverlay(); });
         }

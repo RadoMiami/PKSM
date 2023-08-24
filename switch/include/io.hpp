@@ -41,6 +41,8 @@
 
 #define BUFFER_SIZE 0x80000
 
+inline const std::string TEMP_PATH = "sdmc:/switch/PKSM/temp";
+
 namespace io {
     std::tuple<bool, Result, std::string> backup(size_t index, AccountUid uid, size_t cellIndex);
     std::tuple<bool, Result, std::string> restore(size_t index, AccountUid uid, size_t cellIndex, const std::string& nameFromCell);

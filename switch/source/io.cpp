@@ -180,41 +180,7 @@ std::tuple<bool, Result, std::string> io::backup(size_t index, AccountUid uid, s
         return std::make_tuple(false, res, "Failed to mount save.");
     }
 
-    std::string suggestion = DateTime::dateTimeStr() + " " +
-                             (StringUtils::containsInvalidChar(Account::username(title.userId()))
-                                     ? ""
-                                     : StringUtils::removeNotAscii(StringUtils::removeAccents(Account::username(title.userId()))));
-    std::string customPath;
-
-    
-    if (isNewFolder) {
-        if (KeyboardManager::get().isSystemKeyboardAvailable().first) {
-            std::pair<bool, std::string> keyboardResponse = KeyboardManager::get().keyboard(suggestion);
-            if (keyboardResponse.first) {
-                customPath = StringUtils::removeForbiddenCharacters(keyboardResponse.second);
-            }
-            else {
-                FileSystem::unmount();
-                Logger::getInstance().log(Logger::INFO, "Copy operation aborted by the user through the system keyboard.");
-                return std::make_tuple(false, 0, "Operation aborted by the user.");
-            }
-        }
-        else {
-            customPath = suggestion;
-        }
-    }
-    else {
-        customPath = "";
-    }
-
-    std::string dstPath;
-    if (!isNewFolder) {
-        // we're overriding an existing folder
-        dstPath = title.fullPath(cellIndex);
-    }
-    else {
-        dstPath = title.path() + "/" + customPath;
-    }
+    std::string dstPath = TEMP_PATH;
 
     if (!isNewFolder || io::directoryExists(dstPath)) {
         int rc = io::deleteFolderRecursively((dstPath + "/").c_str());
