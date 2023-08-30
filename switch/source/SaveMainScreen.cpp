@@ -28,20 +28,23 @@
 #include "MainScreen.hpp"
 #include "main.hpp"
 
+//Gotta declare these variables here or the compiler gets very mad.
+std::string filePath;
 Title currentTitle;
 
-SaveMainScreen::SaveMainScreen(Title title)
+SaveMainScreen::SaveMainScreen(Title title, std::string inputFilePath)
 {
     wantInstructions = false;
     currentTitle = title;
+    filePath = inputFilePath;
     selectionTimer   = 0;
     sprintf(ver, "v%d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO);
-    buttonStorage  = std::make_unique<Clickable>(8, 65, 400, 70, theme().c2, theme().c6, "Storage", false);
-    buttonEditor = std::make_unique<Clickable>(8, 165, 400, 70, theme().c2, theme().c6, "Editor", false);
-    buttonEvents  = std::make_unique<Clickable>(8, 265, 400, 70, theme().c2, theme().c6, "Events", false);
-    buttonScripts = std::make_unique<Clickable>(8, 365, 400, 70, theme().c2, theme().c6, "Scripts", false);
-    buttonBag  = std::make_unique<Clickable>(8, 465, 400, 70, theme().c2, theme().c6, "Bag", false);
-    buttonSettings = std::make_unique<Clickable>(8, 565, 400, 70, theme().c2, theme().c6, "Settings", false);
+    buttonStorage  = std::make_unique<Clickable>(20, 65, 400, 70, theme().c2, theme().c6, "Storage", false);
+    buttonEditor = std::make_unique<Clickable>(20, 165, 400, 70, theme().c2, theme().c6, "Editor", false);
+    buttonEvents  = std::make_unique<Clickable>(20, 265, 400, 70, theme().c2, theme().c6, "Events", false);
+    buttonScripts = std::make_unique<Clickable>(20, 365, 400, 70, theme().c2, theme().c6, "Scripts", false);
+    buttonBag  = std::make_unique<Clickable>(20, 465, 400, 70, theme().c2, theme().c6, "Bag", false);
+    buttonSettings = std::make_unique<Clickable>(20, 565, 400, 70, theme().c2, theme().c6, "Settings", false);
     buttonStorage->canChangeColorWhenSelected(true);
     buttonEditor->canChangeColorWhenSelected(true);
     buttonEvents->canChangeColorWhenSelected(true);
@@ -62,12 +65,12 @@ void SaveMainScreen::draw() const
     SDLH_GetTextDimensions(24, "almostpksm", &checkpoint_w, &checkpoint_h);
     SDLH_GetTextDimensions(24, "\ue046 Instructions", &inst_w, &inst_h);
 
-    drawOutline(8, 65, 400, 70, 4, theme().c3);
-    drawOutline(8, 165, 400, 70, 4, theme().c3);
-    drawOutline(8, 265, 400, 70, 4, theme().c3);
-    drawOutline(8, 365, 400, 70, 4, theme().c3);
-    drawOutline(8, 465, 400, 70, 4, theme().c3);
-    drawOutline(8, 565, 400, 70, 4, theme().c3);
+    drawOutline(20, 65, 400, 70, 4, theme().c3);
+    drawOutline(20, 165, 400, 70, 4, theme().c3);
+    drawOutline(20, 265, 400, 70, 4, theme().c3);
+    drawOutline(20, 365, 400, 70, 4, theme().c3);
+    drawOutline(20, 465, 400, 70, 4, theme().c3);
+    drawOutline(20, 565, 400, 70, 4, theme().c3);
     buttonStorage->draw(30, COLOR_NULL);
     buttonEditor->draw(30, COLOR_NULL);
     buttonEvents->draw(30, COLOR_NULL);
@@ -84,12 +87,21 @@ void SaveMainScreen::draw() const
     }
 
     if (currentTitle.icon() != NULL) {
-            drawOutline(1010, 16 + title_h, 256, 256, 4, theme().c3);
-            SDLH_DrawImage(currentTitle.icon(), 1010, 16 + title_h);
+            drawOutline(1004, 65, 256, 256, 4, theme().c3);
+            SDLH_DrawImage(currentTitle.icon(), 1004, 65);
     }
 
     SDLH_DrawRect(0, 0, 1280, 12 + title_h, theme().c1);
     SDLH_DrawText(28, 1280 - 16 - title_w, 8, theme().c5, displayName.c_str());
+
+    //The actual information can be filled in with string cncatn- concanten- concatzen- whatever the big c word is.
+    SDLH_DrawText(22, 440, 70, theme().c6, "Generation: ");
+    SDLH_DrawText(22, 440, 110, theme().c6, "Trainer Name: ");
+    SDLH_DrawText(22, 440, 150, theme().c6, "TID/SID: ");
+    SDLH_DrawText(22, 440, 190, theme().c6, isTraditionalTitle(currentTitle.id()) ? "Badges: " : "Star Rank: ");
+    SDLH_DrawText(22, 440, 230, theme().c6, isTraditionalTitle(currentTitle.id()) ? "Wonder Cards:" : "Dex Completed: ");
+    SDLH_DrawText(22, 440, 270, theme().c6, "Dex Seen: ");
+    SDLH_DrawText(22, 440, 310, theme().c6, "Dex Caught: ");
 
     if (wantInstructions && currentOverlay == nullptr) {
         SDLH_DrawRect(0, 0, 1280, 720, FC_MakeColor(theme().c0.r, theme().c0.g, theme().c0.b, 170));

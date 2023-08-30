@@ -45,7 +45,7 @@ class Scrollable;
 
 class SaveMainScreen : public Screen {
 public:
-    SaveMainScreen(Title title);
+    SaveMainScreen(Title title, std::string inputFilePath);
     void draw(void) const override;
     void update(const InputState& input) override;
 

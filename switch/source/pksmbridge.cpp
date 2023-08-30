@@ -62,6 +62,12 @@ bool isPKMNSwitchTitle(u64 id)
     return isLGPE(id) || isSWSH(id) || isBDSP(id) || isLA(id) || isSV(id);
 }
 
+//Making this work with pre-Switch games is going to be a pain. ...Best to focus on getting Switch games working first, though.
+bool isTraditionalTitle(u64 id)
+{
+    return isLGPE(id) || isSWSH(id) || isBDSP(id) || isSV(id);
+}
+
 bool validateIpAddress(const std::string& ip)
 {
     struct sockaddr_in sa;

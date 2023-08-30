@@ -267,6 +267,7 @@ void loadTitles(void)
             u64 sid        = info.save_data_id;
             AccountUid uid = info.uid;
             //There's probably a better place to do this filtering.
+            //Hey, are you wondering where isPKMNSwitchTitle() is? It's in pksmbridge.cpp.
             if (!Configuration::getInstance().filter(tid) && isPKMNSwitchTitle(tid)) {
                 res = nsGetApplicationControlData(NsApplicationControlSource_Storage, tid, nsacd, sizeof(NsApplicationControlData), &outsize);
                 if (R_SUCCEEDED(res) && !(outsize < sizeof(nsacd->nacp))) {

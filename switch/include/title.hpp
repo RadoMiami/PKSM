@@ -62,6 +62,7 @@ public:
     u64 saveId();
     void saveId(u64 id);
     std::vector<std::string> saves(void);
+    //What is saveDataType??? I don't know where it's being initialized, I don't know where it's being read, WHAT DOES IT MEAN??? -RadoMiami
     u8 saveDataType(void);
     AccountUid userId(void);
     std::string userName(void);

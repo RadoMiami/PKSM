@@ -238,8 +238,6 @@ void MainScreen::handleEvents(const InputState& input)
     // Copy save to sdmc:/switch/PKSM/temp
     if (kdown & HidNpadButton_A) {
         if (g_backupScrollEnabled) {
-            //CELL ZERO CRASHES AND OTHER CELLS DON'T FINISH? WHY?
-            
             currentOverlay = std::make_shared<YesNoOverlay>(
                 *this, "Open this save?",
                 [this]() {
@@ -255,8 +253,9 @@ void MainScreen::handleEvents(const InputState& input)
                             this->index(CELLS, 0);
                             g_backupScrollEnabled = false;
                             entryType(TITLES);
+                            //Probably going to have to change this when support for non-Switch games are added.
                             if (io::fileExists(TEMP_PATH + "/main")) {
-                                changeScreen(std::make_unique<SaveMainScreen>(title));
+                                changeScreen(std::make_unique<SaveMainScreen>(title, TEMP_PATH + "/main"));
                             } else {
                                 currentOverlay = std::make_shared<ErrorOverlay>(*this, 0, "That save does not exist!");
                             }
@@ -273,7 +272,7 @@ void MainScreen::handleEvents(const InputState& input)
                             g_backupScrollEnabled = false;
                             entryType(TITLES);
                             if (io::fileExists(TEMP_PATH + "/main")) {
-                                changeScreen(std::make_unique<SaveMainScreen>(title));
+                                changeScreen(std::make_unique<SaveMainScreen>(title, TEMP_PATH + "/main"));
                             } else {
                                 currentOverlay = std::make_shared<ErrorOverlay>(*this, 0, "That save does not exist!");
                             }

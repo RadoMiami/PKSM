@@ -43,5 +43,6 @@
 
 bool isPKSMBridgeTitle(u64 id);
 bool isPKMNSwitchTitle(u64 id);
+bool isTraditionalTitle(u64 id);
 std::tuple<bool, Result, std::string> sendToPKSMBrigde(size_t index, AccountUid uid, size_t cellIndex);
 std::tuple<bool, Result, std::string> recvFromPKSMBridge(size_t index, AccountUid uid, size_t cellIndex);

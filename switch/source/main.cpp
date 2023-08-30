@@ -44,7 +44,7 @@ static void networkLoop(void)
 int main(void)
 {
     //Change the theme here until I get it working in the settings tab.
-    theme(1);
+    theme(2);
     Result res = servicesInit();
     if (R_FAILED(res)) {
         servicesExit();
@@ -93,6 +93,7 @@ int main(void)
     exit(0);
 }
 
+//I wonder if this causes a memory leak. I sure hope not!
 void changeScreen(std::shared_ptr<Screen> newScreen)
 {
     g_screen = newScreen;
