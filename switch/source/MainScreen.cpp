@@ -100,7 +100,7 @@ void MainScreen::draw() const
         }
 
         SDLH_DrawRect(0, 0, 1280, 12 + title_h, theme().c1);
-        SDLH_DrawText(28, 1280 - 16 - title_w, 8, theme().c5, displayName.c_str());
+        SDLH_DrawText(28, 1280 - 28 - title_w, 8, theme().c5, displayName.c_str());
 
         drawOutline(428, 320, 414, 304, 4, theme().c3);
         backupList->draw(g_backupScrollEnabled);

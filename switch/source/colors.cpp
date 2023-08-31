@@ -50,7 +50,7 @@ static const struct Theme pksmTheme = {
     COLOR_BLACK,           // c0
     COLOR_PKSM_DARKBLUE,   // c1
     COLOR_PKSM_DARKERBLUE, // c2
-    COLOR_PKSM_BLUE,       // c3
+    COLOR_PKSM_DARKERBLUE, // c3
     COLOR_PKSM_BLUE,       // c4
     COLOR_GREY_LIGHTEST,   // c5
     COLOR_WHITE,           // c6

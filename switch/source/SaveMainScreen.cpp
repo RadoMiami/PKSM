@@ -87,21 +87,21 @@ void SaveMainScreen::draw() const
     }
 
     if (currentTitle.icon() != NULL) {
-            drawOutline(1004, 65, 256, 256, 4, theme().c3);
-            SDLH_DrawImage(currentTitle.icon(), 1004, 65);
+            drawOutline(994, 65, 256, 256, 4, theme().c3);
+            SDLH_DrawImage(currentTitle.icon(), 994, 65);
     }
 
     SDLH_DrawRect(0, 0, 1280, 12 + title_h, theme().c1);
-    SDLH_DrawText(28, 1280 - 16 - title_w, 8, theme().c5, displayName.c_str());
+    SDLH_DrawText(28, 1280 - 28 - title_w, 8, theme().c5, displayName.c_str());
 
     //The actual information can be filled in with string cncatn- concanten- concatzen- whatever the big c word is.
-    SDLH_DrawText(22, 440, 70, theme().c6, "Generation: ");
-    SDLH_DrawText(22, 440, 110, theme().c6, "Trainer Name: ");
-    SDLH_DrawText(22, 440, 150, theme().c6, "TID/SID: ");
-    SDLH_DrawText(22, 440, 190, theme().c6, isTraditionalTitle(currentTitle.id()) ? "Badges: " : "Star Rank: ");
-    SDLH_DrawText(22, 440, 230, theme().c6, isTraditionalTitle(currentTitle.id()) ? "Wonder Cards:" : "Dex Completed: ");
-    SDLH_DrawText(22, 440, 270, theme().c6, "Dex Seen: ");
-    SDLH_DrawText(22, 440, 310, theme().c6, "Dex Caught: ");
+    SDLH_DrawText(22, 450, 70, theme().c6, "Generation: ");
+    SDLH_DrawText(22, 450, 110, theme().c6, "Trainer Name: ");
+    SDLH_DrawText(22, 450, 150, theme().c6, "TID/SID: ");
+    SDLH_DrawText(22, 450, 190, theme().c6, isTraditionalTitle(currentTitle.id()) ? "Badges: " : "Star Rank: ");
+    SDLH_DrawText(22, 450, 230, theme().c6, isTraditionalTitle(currentTitle.id()) ? "Wonder Cards:" : "Dex Completed: ");
+    SDLH_DrawText(22, 450, 270, theme().c6, "Dex Seen: ");
+    SDLH_DrawText(22, 450, 310, theme().c6, "Dex Caught: ");
 
     if (wantInstructions && currentOverlay == nullptr) {
         SDLH_DrawRect(0, 0, 1280, 720, FC_MakeColor(theme().c0.r, theme().c0.g, theme().c0.b, 170));
